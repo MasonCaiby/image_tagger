@@ -12,6 +12,10 @@ def add_banner(image_source, cv2_window):
 
     return final_image
 
+def draw_old_boxes():
+    for ref_point in ref_points:
+        cv2.rectangle(image, ref_point[0], ref_point[1], colors[ref_point[2]], line_width)
+
 def tag_image(image_source, colors, image_dict, cv2_window):
     global ref_point, image, clone, ref_points, line_width
 
@@ -26,13 +30,10 @@ def tag_image(image_source, colors, image_dict, cv2_window):
 
     cv2.setMouseCallback(cv2_window, click_and_crop)
 
-    ref_point = []
-
-
     if image_dict:
         ref_points = image_dict['ref_points']
-        for ref_point in ref_points:
-            cv2.rectangle(image, ref_point[0], ref_point[1], colors[ref_point[2]], line_width)
+        draw_old_boxes()
+
     else:
         ref_points = []
 
@@ -66,11 +67,14 @@ def tag_image(image_source, colors, image_dict, cv2_window):
         if key == ord("r"):
             ref_points = []
             image = original.copy()
-            clone = original.copy()
+            clone = image.copy()
 
         elif key == ord("x"):
             print('removing ', rect)
             ref_points.remove(rect)
+            image = original.copy()
+            draw_old_boxes()
+            clone = image.copy()
 
         # if the 'q' key is pressed, break from the loop
         elif key == ord("q"):
