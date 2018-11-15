@@ -8,7 +8,7 @@ def add_banner(image_source, cv2_window):
     height, width, channel = image.shape
 
     final_image = np.zeros((height+100, width, 3), dtype=np.uint8)
-    final_image[100:, :, :] = image
+    final_image[:height, :, :] = image
 
     return final_image
 
@@ -70,11 +70,15 @@ def tag_image(image_source, colors, image_dict, cv2_window):
             clone = image.copy()
 
         elif key == ord("x"):
-            print('removing ', rect)
-            ref_points.remove(rect)
-            image = original.copy()
-            draw_old_boxes()
-            clone = image.copy()
+            try:
+                print('removing ', rect)
+                ref_points.remove(rect)
+                image = original.copy()
+                draw_old_boxes()
+                clone = image.copy()
+            except Exception as e:
+                pass
+
 
         # if the 'q' key is pressed, break from the loop
         elif key == ord("q"):
