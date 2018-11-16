@@ -18,7 +18,7 @@ def draw_old_boxes():
 
 def tag_image(image_source, colors, image_dict, cv2_window):
     global ref_point, image, clone, ref_points, line_width
-
+    ref_point = []
     try:
         image = cv2.imread(image_source)
         height, width, channel = image.shape
@@ -125,7 +125,7 @@ def click_and_crop(event, x, y, flags, param):
 
 def check_moving(x,y):
     rects = None
-
+    print(x,y)
     for rect in ref_points:
         high_y = min(rect[0][1], rect[1][1])
         low_y = max(rect[0][1], rect[1][1])
